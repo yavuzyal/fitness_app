@@ -89,12 +89,18 @@ class _Register1State extends State<Register1> {
 
           currentIndex == 0 ?
           SizedBox(height: 30,) : SizedBox(height: 0,),
-          OutlinedButton(
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue[900],
+                  minimumSize: Size.fromHeight(50),
+                ),
+                onPressed: (){
 
-              onPressed: (){
-
-              },
-              child: Text('Continue')
+                },
+                child: Text('Continue')
+            ),
           ),
           SizedBox(height: 70,),
         ],
@@ -129,7 +135,7 @@ class _Register1State extends State<Register1> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 1.0),
                   ),
-                  hintText: 'Enter Your Name',
+                  hintText: 'Enter Your Email',
                 ),
               ),
             ),
@@ -218,7 +224,7 @@ class _Register1State extends State<Register1> {
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey, width: 1.0),
                 ),
-                hintText: 'Enter Your Name',
+                hintText: 'Enter Your Email',
               ),
             ),
           ),

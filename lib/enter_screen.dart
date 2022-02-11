@@ -75,9 +75,31 @@ class _Enter_ScreenState extends State<Enter_Screen> {
 
                 }
                 else{
-                  setState(() {
-                    _currentPosition = _currentPosition + 1;
-                  });
+                  if(_currentPosition == 0 && sex == 'Non-selected'){
+                    AlertDialog alert =  AlertDialog(
+                      title: Text('For optimal suggestions, please select your gender!', textAlign: TextAlign.center,),
+                      titlePadding: EdgeInsets.all(16),
+                      actionsAlignment: MainAxisAlignment.center,
+                      actions: [
+                        TextButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                            child: Text('OK', style: TextStyle(fontSize: 16),),
+                        ),
+                      ],
+                    );
+
+                    showDialog(context: context, builder: (BuildContext context){
+                      return alert;
+                    });
+                  }
+                  else{
+                    //GENDER FIREBASE EKLE
+                    setState(() {
+                      _currentPosition = _currentPosition + 1;
+                    });
+                  }
                 }
               },
               child: _currentPosition != 3 ? Text('Next' ,style: TextStyle(color: Colors.white),):Text('Save')),

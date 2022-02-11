@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitness_app/profile.dart';
 import 'package:flutter/material.dart';
 
 class Register1 extends StatefulWidget {
@@ -13,6 +16,8 @@ class _Register1State extends State<Register1> {
   late List<bool> isSelected;
   late int currentIndex = 0;
   late String name;
+  late String email;
+  late String password;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -65,6 +70,10 @@ class _Register1State extends State<Register1> {
             ],
             onPressed: (int index) {
               setState(() {
+                if(currentIndex != index){
+                  password = '';
+                  email = '';
+                }
                 currentIndex = index;
                 for (int i = 0; i < isSelected.length; i++) {
                   isSelected[i] = i == index;
@@ -96,7 +105,30 @@ class _Register1State extends State<Register1> {
                   primary: Colors.blue[900],
                   minimumSize: Size.fromHeight(50),
                 ),
-                onPressed: (){
+                onPressed: () async {
+
+                  if(currentIndex == 1){
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).
+                    then((value) => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Profile()),));
+                  }
+
+                  else{
+                    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password).then((value) async =>
+                    await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
+                      'username': 'get_name',
+                      'email': email,
+                      'age': -1,
+                      'weight': -1,
+                      'height': -1,
+                      'gender': 'Non-selected',
+                    }).then((value) =>
+                        Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Profile()),),
+                    ),
+                    );
+
+                  }
 
                 },
                 child: Text('Continue')
@@ -119,11 +151,12 @@ class _Register1State extends State<Register1> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35),
               child: TextFormField(
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty || value == '') {
                     return 'Please enter some text';
                   }
                   else{
-                    name = value;
+                    email = value;
+                    print(email);
                   }
                   return null;
                 },
@@ -145,11 +178,12 @@ class _Register1State extends State<Register1> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35),
               child: TextFormField(
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty || value == '') {
                     return 'Please enter some text';
                   }
                   else{
-                    name = value;
+                    password = value;
+                    print(password);
                   }
                   return null;
                 },

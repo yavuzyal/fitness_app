@@ -31,7 +31,9 @@ class _Register3State extends State<Register3> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 150,),
           Text('Name', style: TextStyle(fontSize: 25),),
+          Spacer(),
           Form(
             key: _formKey,
             child: Padding(
@@ -59,13 +61,24 @@ class _Register3State extends State<Register3> {
               ),
             ),
           ),
-          OutlinedButton(
-              onPressed: (){
-                if(_formKey.currentState!.validate()){
-                  //print('oldu');
-                }
-              },
-              child: Text('Continue', style: TextStyle(fontSize: 15,),)),
+          Spacer(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20,),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue[900],
+                  minimumSize: Size.fromHeight(50),
+                ),
+                onPressed: (){
+                  if(_formKey.currentState!.validate()){
+                    //print('oldu');
+                  }
+                },
+                child: Text('Continue', style: TextStyle(fontSize: 15,),
+                )
+            ),
+          ),
+          SizedBox(height: 70,),
         ],
       ),
     );

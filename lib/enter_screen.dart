@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitness_app/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_walkthrough_screen/flutter_walkthrough_screen.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -17,7 +20,14 @@ class _Enter_ScreenState extends State<Enter_Screen> {
   int _currentValueAge = 25;
   int _currentValueHeight = 150;
   int _currentValueWeight = 50;
+
   String sex = 'Non-selected';
+
+  int age1 = -1;
+  int height1 = -1;
+  int weight1 = -1;
+
+  final _user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +80,17 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                 primary: Colors.blue[900],
                 minimumSize: Size.fromHeight(50),
               ),
-              onPressed: (){
+              onPressed: () async {
                 if(_currentPosition == 3){
-
+                  await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
+                      {
+                        'weight': _currentValueWeight,
+                      }).then((value) =>
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Profile()),
+                      ),
+                  );
                 }
                 else{
                   if(_currentPosition == 0 && sex == 'Non-selected'){
@@ -95,7 +113,28 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                     });
                   }
                   else{
-                    //GENDER FIREBASE EKLE
+                    await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
+                        {
+                          'gender': sex,
+                        });
+                    setState(() {
+                      _currentPosition = _currentPosition + 1;
+                    });
+                  }
+                  if(_currentPosition == 1){
+                    await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
+                        {
+                          'age': _currentValueAge,
+                        });
+                    setState(() {
+                      _currentPosition = _currentPosition + 1;
+                    });
+                  }
+                  if(_currentPosition == 2){
+                    await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
+                        {
+                          'height': _currentValueHeight,
+                        });
                     setState(() {
                       _currentPosition = _currentPosition + 1;
                     });

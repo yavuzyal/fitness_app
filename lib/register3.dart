@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitness_app/enter_screen.dart';
 import 'package:flutter/material.dart';
 
 class Register3 extends StatefulWidget {
@@ -12,6 +15,7 @@ class _Register3State extends State<Register3> {
 
   final _formKey = GlobalKey<FormState>();
   late String name;
+  final _user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +73,15 @@ class _Register3State extends State<Register3> {
                   primary: Colors.blue[900],
                   minimumSize: Size.fromHeight(50),
                 ),
-                onPressed: (){
+                onPressed: () async {
                   if(_formKey.currentState!.validate()){
-                    //print('oldu');
+                    await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
+                        {
+                          'name': name,
+                        }).then((value) =>
+                        Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Enter_Screen()),),
+                    );
                   }
                 },
                 child: Text('Continue', style: TextStyle(fontSize: 15,),

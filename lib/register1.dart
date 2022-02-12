@@ -39,6 +39,7 @@ class _Register1State extends State<Register1> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -117,7 +118,6 @@ class _Register1State extends State<Register1> {
 
                   if(_formKey.currentState!.validate()){
                     if(currentIndex == 1){
-                      print('inside sign in part');
                         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).
                         then((value) => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Register3()),));
@@ -134,7 +134,7 @@ class _Register1State extends State<Register1> {
                           'gender': 'Non-selected',
                         }).then((value) =>
                             Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Profile()),),
+                              MaterialPageRoute(builder: (context) => Register3()),),
                         ),
                         );
                       }

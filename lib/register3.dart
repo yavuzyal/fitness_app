@@ -77,7 +77,7 @@ class _Register3State extends State<Register3> {
                   if(_formKey.currentState!.validate()){
                     await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
                         {
-                          'name': name,
+                          'username': name,
                         }).then((value) =>
                         Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Enter_Screen()),),

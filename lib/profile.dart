@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitness_app/main.dart';
 import 'package:fitness_app/service/signInGoogle.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,12 @@ class _ProfileState extends State<Profile> {
       body: Center(
         child: ElevatedButton(
           onPressed: (){
-            service.signOutFromGoogle();
+            service.signOutFromGoogle().then((value) =>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                ),
+            );
           },
           child: Text('logOut'),
         ),

@@ -112,7 +112,7 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                       return alert;
                     });
                   }
-                  else{
+                  else if (_currentPosition == 0 && sex != 'Non-selected'){
                     await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
                         {
                           'gender': sex,
@@ -121,7 +121,7 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                       _currentPosition = _currentPosition + 1;
                     });
                   }
-                  if(_currentPosition == 1){
+                  else if(_currentPosition == 1){
                     await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
                         {
                           'age': _currentValueAge,
@@ -130,7 +130,7 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                       _currentPosition = _currentPosition + 1;
                     });
                   }
-                  if(_currentPosition == 2){
+                  else if(_currentPosition == 2){
                     await FirebaseFirestore.instance.collection('users').doc(_user!.uid).update(
                         {
                           'height': _currentValueHeight,
@@ -192,7 +192,7 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                 )
             ),
             SizedBox(height: 15,),
-            Text('Woman', style: TextStyle(fontSize: 17),),
+            Text('Female', style: TextStyle(fontSize: 17),),
           ],
         ),
 
@@ -230,7 +230,7 @@ class _Enter_ScreenState extends State<Enter_Screen> {
                 )
             ),
             SizedBox(height: 15,),
-            Text('Man', style: TextStyle(fontSize: 17),),
+            Text('Male', style: TextStyle(fontSize: 17),),
           ],
         ),
       ],

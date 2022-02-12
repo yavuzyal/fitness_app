@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitness_app/enter_screen.dart';
@@ -81,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       signInGoogle service = signInGoogle();
                       try {
                         service.signInwithGoogle().then((value) =>  Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Profile()),));
+                          MaterialPageRoute(builder: (context) => Register3()),));
 
                         //Navigator.pushNamedAndRemoveUntil(context, Constants.homeNavigate, (route) => false);
                       } catch(e){
@@ -101,10 +102,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     Buttons.Facebook,
                     elevation: 5,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Enter_Screen()),
+                      AlertDialog alert =  AlertDialog(
+                        title: Text('On Progress :(', textAlign: TextAlign.center,),
+                        titlePadding: EdgeInsets.all(16),
+                        actionsAlignment: MainAxisAlignment.center,
+                        actions: [
+                          TextButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                            child: Text('OK NO PROBLEM :)', style: TextStyle(fontSize: 16),),
+                          ),
+                        ],
                       );
+
+                      showDialog(context: context, builder: (BuildContext context){
+                        return alert;
+                      });
                     },
                   ),
                   SizedBox(height: 5,),
@@ -115,8 +129,20 @@ class _MyHomePageState extends State<MyHomePage> {
                         primary: Colors.blue[900],
                         minimumSize: Size.fromHeight(40),
                       ),
-                      onPressed: (){
-
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signInAnonymously().then((value) async =>
+                        await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
+                          'username': 'get_name',
+                          'email': 'anonymous',
+                          'age': -1,
+                          'weight': -1,
+                          'height': -1,
+                          'gender': 'Non-selected',
+                        }).then((value) =>
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Register3()),),
+                        ),
+                        );
                       },
                       child: Text('Continue without SignUp', style: TextStyle(fontSize: 15,),
                       )
@@ -124,15 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 35,),
-            FloatingActionButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Profile()),
-                  );
-                },
-            child: Text('Register'),),
           ],
         ),
       )
